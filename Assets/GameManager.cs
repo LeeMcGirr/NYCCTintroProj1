@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    public enum GameState
+    {
+        STARTMENU,
+        PLAYING,
+        GAMEOVER,
+        PAUSE
+    }
+    public GameState gameStateMachine;
+
+
     bool managerExists = false;
 
     void Awake()
@@ -21,16 +32,46 @@ public class GameManager : MonoBehaviour
             }
         }
         managerExists = true;
+        gameStateMachine = GameState.PAUSE;
     }
     // Start is called before the first frame update
     void Start()
     {
+
         
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        switch(gameStateMachine)
+        {
+            case GameState.PAUSE:
+            //logic that runs when the game is paused goes here
+            Time.timeScale = 0f;
+            break;
+
+            case GameState.STARTMENU:
+            //start menu only
+            break;
+
+            case GameState.GAMEOVER:
+            //when you lose
+            break;
+
+            case GameState.PLAYING:
+            //game is playing
+            break;
+
+
+        }
+
         
+    }
+
+    void changeState(GameState target)
+    {
+        gameStateMachine = target;
     }
 }

@@ -6,19 +6,50 @@ public class WASD : MonoBehaviour
 {
     //speed is our public mod for the direction input
     public float speed = 1f;
+    public Animator myAnim;
     Rigidbody2D myRB;
     Vector3 dir = new Vector3(0,0,0);
     // Start is called before the first frame update
+
+    public enum PlayerState
+    {
+        WALKING,
+        RUNNING,
+        JUMPING,
+        IDLE,
+        FALLING
+    }
+    public PlayerState playerStateMachine;
+
     void Start()
     {
-
+            myAnim = GetComponent<Animator>();
     }
     // Update is called once per frame
     void Update()
     {
+
+        if(Direction() != Vector3.zero) {myAnim.SetBool("isIdle", false);}
+        else {myAnim.SetBool("isIdle", true);}
+        switch(playerStateMachine)
+        {
+        
+        case PlayerState.WALKING:
         dir = Direction();
         //Debug.Log("desired dir based off player input: " + dir);
         transform.Translate(dir*speed*Time.deltaTime);
+        break;
+
+        
+
+        case PlayerState.JUMPING:
+        if(Input.GetKeyUp(KeyCode.Space)) 
+        {
+            gameObject.GetComponent<Rigidbody2D>().AddForce(Vector3.up*30f);
+        }
+        break;
+        }
+    
         
     }
 //--------------------------------- THIS METHOD DOES INPUT CHECKS FOR WASD -----------------------------------------
